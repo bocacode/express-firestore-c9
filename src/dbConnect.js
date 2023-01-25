@@ -7,7 +7,7 @@ export default function dbConnect() {
   if(!getApps().length) {
     // connect
     initializeApp({
-      credential: cert(serviceAccount)
+      credential: cert(service_account)
     })
   }
   // return db-connection
