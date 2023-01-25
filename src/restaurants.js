@@ -36,7 +36,8 @@ export async function createRestaurant(req, res) {
 export async function updateRestaurantById(req, res) {
   const { restId } = req.params
   const updateInfo = req.body
-
+  // add updateAt date here:
+  updateInfo.update = FieldValue.serverTimestamp()
   const db = dbConnect()
   await db.collection(collectionName).doc(restId).update(updateInfo)
   res.status(202).send("Restaurant Updated")
