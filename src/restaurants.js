@@ -1,13 +1,13 @@
+import { FieldValue } from "firebase-admin/firestore"
 import dbConnect from "./dbConnect.js"
 const collectionName = 'restaurants'
 
 // Get All
 export async function getAllRestaurants(req, res) {
   const db = dbConnect()
-  const collection = db.collection(collectionName).get()
-  const restaurants = collection.docs.map( (doc) => {
-    return rest = doc.data();
-  })
+  const collection = await db.collection(collectionName)
+    .orderBy('createdAt', 'desc').get()
+  const restaurants = collection.docs.map(doc => ({...doc.data(), restId: doc.id}));
   res.send(restaurants)
 }
 
@@ -24,7 +24,9 @@ export async function getRestaurantById(req, res) {
 // Create
 export async function createRestaurant(req, res) {
   const db = dbConnect()
-  const newRestaurant = req.body
+  let newRestaurant = req.body
+  // add a timestamp to the new restaurant
+  newRestaurant.createdAt = FieldValue.serverTimestamp()
   await db.collection(collectionName).add(newRestaurant)
   res.status(201).send('Added Restaurant')
 }
