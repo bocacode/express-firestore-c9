@@ -7,7 +7,7 @@ export async function getAllRestaurants(req, res) {
   const db = dbConnect()
   const collection = await db.collection(collectionName)
     .orderBy('createdAt', 'desc').get()
-  const restaurants = collection.docs.map(doc => ({...doc.data(), restId: doc.id}));
+  const restaurants = collection.docs.map(doc => ({ ...doc.data(), restId: doc.id }));
   res.send(restaurants)
 }
 
@@ -35,8 +35,9 @@ export async function createRestaurant(req, res) {
 // Update
 export async function updateRestaurantById(req, res) {
   const { restId } = req.params
-  const updateInfo = req.body
-
+  let updateInfo = req.body
+  // add updatedAt date here: 
+  updateInfo.updateAt = FieldValue.serverTimestamp()
   const db = dbConnect()
   await db.collection(collectionName).doc(restId).update(updateInfo)
   res.status(202).send("Restaurant Updated")
