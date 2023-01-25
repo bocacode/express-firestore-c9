@@ -6,12 +6,12 @@ import { getAllRestaurants, getRestaurantById, createRestaurant }
 
 dotenv.config()
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3031
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-
+// eh!!
 // set up routes
 app.get('/restaurants', getAllRestaurants)
 app.get('/restaurants/:restId', getRestaurantById)
